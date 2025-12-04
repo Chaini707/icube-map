@@ -48,17 +48,22 @@ svg {
 }
 
 
-@keyframes glowPing {
+/* ===========================================================
+   Dynamic Glow Animation Controlled by CSS Variable
+   =========================================================== */
+
+@keyframes glowPingDynamic {
   0% {
     opacity: 0.8;
-    box-shadow: 0 0 0 0 rgba(144, 240, 221, 0.5);
+    box-shadow: 0 0 0 0 var(--glow-color);
   }
   100% {
     opacity: 0;
-    box-shadow: 0 0 0 12px rgba(144, 240, 221, 0);
+    box-shadow: 0 0 0 12px rgba(0, 0, 0, 0);
   }
 }
 
-.glow-ping {
-  animation: glowPing 1.8s infinite;
+.glow-ping-dynamic {
+  animation: glowPingDynamic 1.8s infinite;
+  border-radius: 9999px;
 }

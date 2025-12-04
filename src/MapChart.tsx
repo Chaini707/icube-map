@@ -8,8 +8,15 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 
-import { capitals } from "../public/constant";
+import { capitals, STATUS_STYLE, type PlantDetail } from "../public/constant";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
+import type { CSSProperties } from "react";
+
+
+type CSSVarStyle = CSSProperties & {
+  [key: `--${string}`]: string | number;
+};
+
 
 // 👉 Define Type for Parent Position
 export type PositionType = {
@@ -39,6 +46,45 @@ const MapChart = ({
 }) => {
 
   // ⛵ Smooth flyTo animation now correctly typed + parent controlled
+
+
+  const statusDot = (type: PlantDetail["status"]) => {
+    const s = STATUS_STYLE[type];
+    if (!s) return null;
+
+    return (
+      <div
+        className="w-3 h-3 rounded-full"
+        style={{ backgroundColor: s.dot, boxShadow: `0 0 8px ${s.dot}` }}
+      />
+    );
+  };
+
+  const statusMarker = (type: PlantDetail["status"]) => STATUS_STYLE[type];
+
+
+  const detailStatus = (
+    type: PlantDetail["status"] | null,
+    selectedCity?: string | null
+  ) => {
+    if (!type) return null;
+    const s = STATUS_STYLE[type];
+
+    return (
+      <>
+        <div
+          className={`rounded-md ${selectedCity ? "w-[35px] h-5" : "w-[50px] h-[30px]"}`}
+          style={{
+            backgroundColor: s.bg,
+            border: `1px solid ${s.border}`,
+          }}
+        />
+        <h1 className="text-sm font-medium">{type}</h1>
+      </>
+    );
+  };
+
+
   
 
   return (
@@ -71,24 +117,20 @@ const MapChart = ({
                 {capitals.find((c) => c.code === selectedCity)?.country}
               </div>
               <div className="flex justify-start items-center space-x-2">
-                <div className="w-[35px] h-5 border border-[#3DD0AE] bg-[#3DD0AE] rounded-md"></div>
-                <h1 className="x font-medium">Healthy</h1>
+                {detailStatus(capitals.find((c) => c.code === selectedCity)!.status!, selectedCity)}
               </div>
             </div>
           </>
         ) : (
           <div className="space-y-4">
             <div className="flex justify-start items-center space-x-2">
-              <div className="w-[50px] h-[30px] border border-[#3DD0AE] bg-[#3DD0AE] rounded-lg"></div>
-              <h1 className="text-sm font-medium">Healthy</h1>
+              {detailStatus('Healthy')}
             </div>
             <div className="flex justify-start items-center space-x-2">
-              <div className="w-[50px] h-[30px] border border-[#B68822] bg-[#D5A63F] rounded-lg"></div>
-              <h1 className="text-sm font-medium">At Risk</h1>
+              {detailStatus('At-Risk')}
             </div>
             <div className="flex justify-start items-center space-x-2">
-              <div className="w-[50px] h-[30px] border border-[#AC1F1F] bg-[#D24C4C] rounded-lg"></div>
-              <h1 className="text-sm font-medium">Critical</h1>
+              {detailStatus('Critical')}
             </div>
           </div>
         )}
@@ -177,14 +219,30 @@ const MapChart = ({
                   <Marker coordinates={city.coords}>
                     <foreignObject x={-20} y={-20} width={40} height={40}>
                       <div className="relative w-full h-full flex items-center justify-center">
-                        <div className="absolute h-4 w-4 rounded-full glow-ping" />
+
+                        {/* Glow ring (animated) */}
+                        <div
+                          className="absolute h-4 w-4 glow-ping-dynamic"
+                          style={
+                            {
+                              "--glow-color": statusMarker(city.status).glow,
+                            } as CSSVarStyle
+                          }
+                        />
+
+                        {/* Center dot */}
                         <div
                           className="relative h-2.5 w-2.5 rounded-full"
-                          style={{ backgroundColor: "#90F0DD", boxShadow: "0 0 10px #90F0DD" }}
+                          style={{
+                            backgroundColor: statusMarker(city.status).dot,
+                            boxShadow: `0 0 10px ${statusMarker(city.status).dot}`,
+                          }}
                         />
                       </div>
                     </foreignObject>
                   </Marker>
+
+
 
                   {/* Annotation ONLY when selected */}
                   {isSelected && (
@@ -230,7 +288,7 @@ const MapChart = ({
       </div>
 
       {/* RIGHT: LIST PANEL */}
-      <div className="w-[35%] min-w-[300px] z-9999 h-full px-8 flex items-start justify-center">
+      <div className="w-[37%] min-w-[300px] z-9999 h-full px-8 flex items-start justify-center">
         <div
           className="w-full bg-[#071A1F] rounded-xl max-h-[79vh] overflow-y-auto
                   shadow-[0_0_40px_rgba(100,180,205,0.45)] relative"
@@ -239,12 +297,13 @@ const MapChart = ({
           {
             selectedCountry ? (
               <div
-                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
+                className="grid grid-cols-[0.5fr_1.2fr_1fr_1fr_2.1fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
                               rounded-t-xl py-3 px-4 sticky top-0 z-10"
               >
-                <div className="rounded-tl-xl px-4">Customer</div>
-                <div className="rounded-tr-xl px-3">Country</div>
-                <div className="rounded-tr-xl text-nowrap">Office</div>
+                <div className="rounded-tl-xl">Status</div>
+                <div className="rounded-tl-xl px-3">Customer</div>
+                <div className="rounded-tr-xl px-4">Country</div>
+                <div className="rounded-tr-xl">Office</div>
                 <div className="rounded-tr-xl">Description</div>
                 <div
                   className="absolute top-3 right-5 rounded-tr-xl  cursor-pointer hover:text-white flex justify-end"
@@ -264,12 +323,13 @@ const MapChart = ({
             ):
             (
               <div
-                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
+                className="grid grid-cols-[0.5fr_1.2fr_1fr_1fr_2.1fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
                               rounded-t-xl py-3 px-4 sticky top-0 z-10 text-start"
               >
-                <div className="rounded-tl-xl px-4">Customer</div>
-                <div className="rounded-tr-xl px-3">Country</div>
-                <div className="rounded-tr-xl text-nowrap">Office</div>
+                <div className="rounded-tl-xl">Status</div>
+                <div className="rounded-tl-xl px-3">Customer</div>
+                <div className="rounded-tr-xl px-4">Country</div>
+                <div className="rounded-tr-xl">Office</div>
                 <div className="rounded-tr-xl">Description</div>
               </div>
             )
@@ -280,7 +340,7 @@ const MapChart = ({
             {capitals.map((city) => (
               <ul
                 key={city.code}
-                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#0D3241]
+                className="grid grid-cols-[0.5fr_1.2fr_1fr_1fr_2.1fr] bg-[#0D3241]
                           text-white text-xs font-medium rounded-xl
                           py-3 px-4 items-center hover:bg-[#538398] cursor-pointer
                           hover:border-[#A2B9BE] hover:border border-none
@@ -293,6 +353,10 @@ const MapChart = ({
                 onMouseEnter={() => setTooltipContent(city.code)}
                 onMouseLeave={() => setTooltipContent("")}
               >
+                 {/* 🔵 Status Dot */}
+                <li className="">
+                  {statusDot(city.status)}
+                </li>
 
                 {/* Customer */}
                 <li className="rounded-l-xl ">{city.company}</li>
@@ -304,7 +368,7 @@ const MapChart = ({
                 <li className="text-start opacity-90">{city.code}</li>
 
                 {/* Description */}
-                <li className="opacity-40 text-start">{city.description}</li>
+                <li className="opacity-40 text-start pl-2">{city.description}</li>
                 
               </ul>
             ))}

@@ -1,13 +1,36 @@
-export type Capital = {
+export type PlantDetail = {
   code: string;
   description: string;
   country: string;
   company: string; // ← new field
   coords: [number, number];
   rect: [number, number];
+  status: "Healthy" | "At-Risk" | "Critical";
 };
 
-export const capitals: Capital[] = [
+export const STATUS_STYLE = {
+  Healthy: {
+    border: "#3DD0AE",
+    bg: "#3DD0AE",
+    glow: "#3DD0AE",
+    dot: "#3DD0AE",
+  },
+  "At-Risk": {
+    border: "#B68822",
+    bg: "#D5A63F",
+    glow: "#D5A63F",
+    dot: "#D5A63F",
+  },
+  Critical: {
+    border: "#AC1F1F",
+    bg: "#D24C4C",
+    glow: "#D24C4C",
+    dot: "#D24C4C",
+  },
+} as const;
+
+
+export const capitals: PlantDetail[] = [
   {
     code: "BSFC",
     description: "BRIDGESTONE TAIWAN CO., LTD.",
@@ -15,6 +38,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [121.0092015, 24.8620523],
     rect: [33, 20],
+    status: 'Healthy',
   },
   {
     code: "BSINB",
@@ -23,6 +47,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [106.983491, -6.198643],
     rect: [35, 20],
+    status: 'Healthy',
   },
   {
     code: "BSINK",
@@ -31,6 +56,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [107.193915, -6.270352],
     rect: [35, 20],
+    status: 'Healthy',
   },
   {
     code: "BTMV",
@@ -39,6 +65,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [106.7811899, 20.8173481],
     rect: [35, 20],
+    status: 'Healthy',
   },
   {
     code: "BTMT",
@@ -47,6 +74,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [101.0525187, 13.448836],
     rect: [35, 20],
+    status: 'Healthy',
   },
   {
     code: "TBSCN",
@@ -55,6 +83,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [100.834215, 14.31722],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "TBSCR",
@@ -63,6 +92,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [100.617342057894, 14.0012665633095],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "BSSY",
@@ -71,6 +101,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [123.356668, 41.759532],
     rect: [33, 20],
+    status: 'Healthy',
   },
   {
     code: "BSTJ",
@@ -79,6 +110,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [117.14535, 39.266085],
     rect: [32, 20],
+    status: 'Healthy',
   },
   {
     code: "BSWX",
@@ -87,6 +119,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [120.418546, 31.507727],
     rect: [36, 20],
+    status: 'Healthy',
   },
   {
     code: "WACOL",
@@ -95,6 +128,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [152.9283759, -27.602046],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "BSIDP",
@@ -103,6 +137,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [73.8134241, 18.5604928],
     rect: [37, 20],
+    status: 'Healthy',
   },
   {
     code: "BSIDI",
@@ -111,6 +146,7 @@ export const capitals: Capital[] = [
     company: "BRIDGESTONE",
     coords: [75.5234028, 22.6967334],
     rect: [34, 20],
+    status: 'Healthy',
   },
   // --- SRITRANG FACTORIES ---
 
@@ -121,6 +157,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [99.72647933852875, 8.30756287588549],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-HN",
@@ -129,6 +166,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [99.59559324303007, 7.944960322994456],
     rect: [43, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-SK",
@@ -137,6 +175,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [99.4342323392804, 8.07077663195217],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-UD",
@@ -145,6 +184,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [102.85674451880026, 17.633578745586043],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-UB-STR",
@@ -153,6 +193,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [104.73324345075706, 15.38790887345792],
     rect: [63, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-PL",
@@ -161,6 +202,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [100.52135312932396, 17.342446505207356],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-SG",
@@ -169,6 +211,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [102.02096817050867, 14.553825949995744],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-KS",
@@ -177,6 +220,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [103.49122197980745, 16.90257291813098],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-LI",
@@ -185,6 +229,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [101.75863994575721, 17.897002423610576],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-SN",
@@ -193,6 +238,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [104.20432760496801, 17.323008865863486],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "RBL-BK",
@@ -201,6 +247,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [103.63173096740947, 18.293532725615986],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "RBL-BR",
@@ -209,6 +256,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [103.03819852619756, 14.609302778619986],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "RBL-MD",
@@ -217,6 +265,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [104.67022810568075, 16.66915966212584],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "NHR-STR",
@@ -225,6 +274,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [100.38689853726902, 6.616223688650071],
     rect: [50, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-PT",
@@ -233,6 +283,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [101.33778659213961, 7.098617446204467],
     rect: [40, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-NW",
@@ -241,6 +292,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [101.86517925500391, 6.823471022956529],
     rect: [44, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-CR",
@@ -249,6 +301,7 @@ export const capitals: Capital[] = [
     company: "SRITRANG",
     coords: [100.279349243306, 19.92270450914709],
     rect: [42, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-PSR",
@@ -257,6 +310,7 @@ export const capitals: Capital[] = [
     country: "Thailand",
     coords: [100.468873, 6.897641603],
     rect: [47, 20],
+    status: 'Healthy',
   },
   {
     code: "STA-Agro",
@@ -265,6 +319,7 @@ export const capitals: Capital[] = [
     country: "Thailand",
     coords: [99.59594709, 7.544260756],
     rect: [50, 20],
+    status: 'Healthy',
   },
   // DENSO
   {
@@ -274,21 +329,6 @@ export const capitals: Capital[] = [
     country: "Thailand",
     coords: [100.9526389, 13.59933085],
     rect: [31, 20],
-  },
-  {
-    code: "SRG",
-    company: "DENSO",
-    description: "DENSO Innovative Manufacturing Solution Asia Co., Ltd.",
-    country: "Thailand",
-    coords: [100.6068001, 13.63844584],
-    rect: [28, 20],
-  },
-  {
-    code: "DDC",
-    company: "DENSO",
-    description: "Denso Distribution Center (DDC)",
-    country: "Thailand",
-    coords: [100.9461052, 13.56782842],
-    rect: [29, 20],
+    status: 'Healthy',
   },
 ];
