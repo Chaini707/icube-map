@@ -43,6 +43,8 @@ const MapChart = ({
 
   return (
     <div className="w-screen h-full flex pt-4 relative">
+    
+
       {/* OVERLAY BOX (BOTTOM LEFT) */}
       
       <div
@@ -228,76 +230,86 @@ const MapChart = ({
       </div>
 
       {/* RIGHT: LIST PANEL */}
-      <div className="w-[35%] min-w-[300px] h-full px-8 flex items-start justify-center">
+      <div className="w-[35%] min-w-[300px] z-9999 h-full px-8 flex items-start justify-center">
         <div
           className="w-full bg-[#071A1F] rounded-xl max-h-[79vh] overflow-y-auto
-                  shadow-[0_0_40px_rgba(100,180,205,0.45)]"
+                  shadow-[0_0_40px_rgba(100,180,205,0.45)] relative"
         >
           {/* HEADER */}
           {
             selectedCountry ? (
               <div
-            className="grid grid-cols-[1fr_4fr_auto] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
-                          rounded-t-xl py-3 px-4 sticky top-0 z-10"
-          >
-            <div className="rounded-tl-xl px-4">Office</div>
-            <div className="rounded-tr-xl pl-[20.5px]">Description</div>
-            <div
-              className="rounded-tr-xl pr-2 cursor-pointer hover:text-white flex justify-end"
-              onClick={() => {
-                // reset logic here
-                setSelectedCity("");
-                setSelectedCountry("");
-                setTimeout(() => {
-                  flyTo([40, 0], 1.2, "zoom-then-pan");
-                }, 30);
+                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
+                              rounded-t-xl py-3 px-4 sticky top-0 z-10"
+              >
+                <div className="rounded-tl-xl px-4">Customer</div>
+                <div className="rounded-tr-xl px-3">Country</div>
+                <div className="rounded-tr-xl text-nowrap">Office</div>
+                <div className="rounded-tr-xl">Description</div>
+                <div
+                  className="absolute top-3 right-5 rounded-tr-xl  cursor-pointer hover:text-white flex justify-end"
+                  onClick={() => {
+                    // reset logic here
+                    setSelectedCity("");
+                    setSelectedCountry("");
+                    setTimeout(() => {
+                      flyTo([40, 0], 1.2, "zoom-then-pan");
+                    }, 30);
 
-              }}
-            >
-              <ArrowUturnLeftIcon className="w-5 h-5 text-[#CFE0EA] hover:text-white transition" />
-            </div>
-          </div>
+                  }}
+                >
+                  <ArrowUturnLeftIcon className="w-5 h-5 text-[#CFE0EA] hover:text-white transition" />
+                </div>
+              </div>
             ):
             (
               <div
-            className="grid grid-cols-[1fr_4fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
-                          rounded-t-xl py-3 px-4 sticky top-0 z-10"
-          >
-            <div className="rounded-tl-xl px-4">Office</div>
-            <div className="rounded-tr-xl pl-[13.5px]">Description</div>
-          </div>
+                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#34505B] text-sm font-semibold text-[#CFE0EA]
+                              rounded-t-xl py-3 px-4 sticky top-0 z-10 text-start"
+              >
+                <div className="rounded-tl-xl px-4">Customer</div>
+                <div className="rounded-tr-xl px-3">Country</div>
+                <div className="rounded-tr-xl text-nowrap">Office</div>
+                <div className="rounded-tr-xl">Description</div>
+              </div>
             )
           }
 
           {/* LIST */}
-          <div className="space-y-4 my-4 px-4">
-  {capitals.map((city) => (
-    <ul
-      key={city.code}
-      className="grid grid-cols-[1fr_3fr_1fr] bg-[#0D3241]
-                 text-white text-xs font-medium rounded-xl
-                 py-3 px-4 items-center hover:bg-[#538398] cursor-pointer
-                 hover:border-[#A2B9BE] hover:border border-none
-                 transition-all"
-      onClick={() => {
-        flyTo(city.coords, 4);
-        setSelectedCity(city.code);
-        setSelectedCountry(city.country);
-      }}
-      onMouseEnter={() => setTooltipContent(city.code)}
-      onMouseLeave={() => setTooltipContent("")}
-    >
-      {/* col 1 */}
-      <li className="rounded-l-xl">{city.code}</li>
+          <div className="space-y-4 my-4 px-4 text-start">
+            {capitals.map((city) => (
+              <ul
+                key={city.code}
+                className="grid grid-cols-[1fr_1fr_1fr_2fr] bg-[#0D3241]
+                          text-white text-xs font-medium rounded-xl
+                          py-3 px-4 items-center hover:bg-[#538398] cursor-pointer
+                          hover:border-[#A2B9BE] hover:border border-none
+                          transition-all"
+                onClick={() => {
+                  flyTo(city.coords, 4);
+                  setSelectedCity(city.code);
+                  setSelectedCountry(city.country);
+                }}
+                onMouseEnter={() => setTooltipContent(city.code)}
+                onMouseLeave={() => setTooltipContent("")}
+              >
 
-      {/* col 2 */}
-      <li className="opacity-30">{city.description}</li>
-      <li className="text-right text-[13px] opacity-70">{city.company}</li>
+                {/* Customer */}
+                <li className="rounded-l-xl ">{city.company}</li>
 
-      {/* col 3 → NEW COLUMN */}
-    </ul>
-  ))}
-</div>
+                {/* Country */}
+                <li className="opacity-40 pl-3">{city.country}</li>
+
+                {/* Office */}
+                <li className="text-start opacity-90">{city.code}</li>
+
+                {/* Description */}
+                <li className="opacity-40 text-start">{city.description}</li>
+                
+              </ul>
+            ))}
+          </div>
+
 
         </div>
       </div>
