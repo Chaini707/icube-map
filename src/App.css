@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+html {
+  font-family: system-ui, sans-serif;
+  font-size: 1.25rem;
+}
+
+body {
+  margin: 0;
+}
+
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.blink-marker {
+  fill: #3DD0AE;       /* green color */
+  animation: blinkMarker 1s infinite ease-in-out;
+}
+
+@keyframes blinkMarker {
+  0% { opacity: 1; r: 3; }
+  50% { opacity: 0.3; r: 5; }  /* pulse bigger */
+  100% { opacity: 1; r: 3; }
+}
+
+
+ 
+@keyframes circlePing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+}
+
+.circle-ping {
+  animation: circlePing 1.6s infinite ease-out;
+}
+
+
+@keyframes glowPing {
+  0% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 0 rgba(144, 240, 221, 0.5);
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 12px rgba(144, 240, 221, 0);
+  }
+}
+
+.glow-ping {
+  animation: glowPing 1.8s infinite;
+}
